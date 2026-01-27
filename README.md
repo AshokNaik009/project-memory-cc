@@ -44,9 +44,8 @@ Options:
 # Clone or download this repository
 git clone https://github.com/AshokNaik009/project-memory-cc.git
 
-# Copy the .claude directory to your project
+# Copy the .claude directory to your project (includes skill, commands, hooks)
 cp -r project-memory-cc/.claude your-project/
-cp project-memory-cc/SKILL.md your-project/.claude/
 ```
 
 2. **Initialize project memory:**
@@ -215,10 +214,12 @@ your-project/
 │   │   └── memory-search.md   # /memory-search command
 │   ├── hooks/
 │   │   └── session_start.js   # Session start hook (Node.js)
-│   └── memory/
-│       ├── project.md         # Project context (generated)
-│       └── features.json      # Feature database (generated)
-└── SKILL.md                   # Skill definition
+│   ├── memory/
+│   │   ├── project.md         # Project context (generated)
+│   │   └── features.json      # Feature database (generated)
+│   └── skills/
+│       └── project-memory/
+│           └── SKILL.md       # Skill definition
 ```
 
 ## Contributing
