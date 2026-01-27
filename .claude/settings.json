@@ -5,7 +5,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "python3 \"$CLAUDE_PROJECT_DIR/.claude/hooks/session_start.py\"",
+            "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/session_start.js\"",
             "timeout": 10
           }
         ]

@@ -194,7 +194,7 @@ Created during `/init-memory`, contains:
 
 ## Session Start Hook
 
-A Python hook runs at session start to load memory context:
+A Node.js hook runs at session start to load memory context:
 
 ```
 Claude Code session started.
@@ -214,7 +214,7 @@ your-project/
 │   │   ├── memory-status.md   # /memory-status command
 │   │   └── memory-search.md   # /memory-search command
 │   ├── hooks/
-│   │   └── session_start.py   # Session start hook
+│   │   └── session_start.js   # Session start hook (Node.js)
 │   └── memory/
 │       ├── project.md         # Project context (generated)
 │       └── features.json      # Feature database (generated)
