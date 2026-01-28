@@ -158,12 +158,190 @@ Result: Alert user about similar feature
 
 ## Commands Reference
 
-| Command | Description |
-|---------|-------------|
-| `/init-memory` | Initialize project memory (run once per project) |
-| `/execute TICKET-ID description` | Implement a feature with duplicate detection |
-| `/memory-status` | Show all tracked features and their status |
-| `/memory-search query` | Search features by keyword |
+### `/init-memory`
+
+Initialize project memory for a new project. Run once per repository.
+
+**Usage:**
+```
+/init-memory
+```
+
+**Example Session:**
+```
+User: /init-memory
+
+Claude: Initializing project memory...
+✓ Created .claude/memory/features.json
+✓ Created .claude/memory/project.md
+✓ Analyzed project structure
+
+Project memory initialized! You can now use:
+- /execute TICKET-ID description - to implement features
+- /memory-status - to see tracked features
+- /memory-search query - to find features
+```
+
+---
+
+### `/execute TICKET-ID description`
+
+Implement a feature with automatic duplicate detection. Checks for existing similar work before starting.
+
+**Usage:**
+```
+/execute TICKET-123 Add user authentication with OAuth
+/execute BUG-456 Fix login redirect issue
+/execute FEAT-789 Implement dark mode toggle
+```
+
+**Example Session (No Duplicates):**
+```
+User: /execute AUTH-101 Add password reset via email
+
+Claude: Checking project memory...
+✓ No exact match for AUTH-101
+✓ No similar features found (0% overlap)
+
+Proceeding with implementation...
+[implements feature]
+
+✓ Feature implemented
+✓ Memory updated with AUTH-101
+Files modified:
+  - src/auth/password-reset.ts
+  - src/email/templates/reset.html
+  - tests/auth/password-reset.test.ts
+
+Commit these changes? (y/n)
+```
+
+**Example Session (Duplicate Detected):**
+```
+User: /execute AUTH-202 User login with Google
+
+Claude: Checking project memory...
+⚠ Similar feature detected!
+
+AUTH-101: "User authentication with OAuth"
+├─ Status: implemented
+├─ Files: src/auth/oauth.ts, src/auth/middleware.ts
+├─ Developer: Jane Smith
+├─ Date: 2025-01-15
+└─ Similarity: 75% match
+
+Keywords matching: ["user", "login", "oauth"]
+
+Options:
+1. View existing implementation
+2. Extend existing feature
+3. Proceed anyway (different scope)
+4. Cancel
+
+What would you like to do?
+```
+
+---
+
+### `/memory-status`
+
+Display all tracked features with their current status.
+
+**Usage:**
+```
+/memory-status
+```
+
+**Example Session:**
+```
+User: /memory-status
+
+Claude: Project Memory Status
+═══════════════════════════════════════════════════════
+
+ ✓ IMPLEMENTED (3)
+ ─────────────────
+ AUTH-101  User authentication with OAuth
+           Files: src/auth/oauth.ts, src/auth/middleware.ts
+           Dev: Jane Smith | 2025-01-15
+
+ UI-205    Dashboard layout with responsive grid
+           Files: src/components/Dashboard.tsx, src/styles/grid.css
+           Dev: John Doe | 2025-01-20
+
+ API-301   REST API rate limiting
+           Files: src/middleware/rateLimit.ts, src/config/limits.ts
+           Dev: Jane Smith | 2025-01-22
+
+ ⏳ IN PROGRESS (1)
+ ─────────────────
+ FEAT-402  Real-time notifications
+           Files: src/notifications/websocket.ts
+           Dev: John Doe | Started: 2025-01-27
+
+ ○ PLANNED (2)
+ ─────────────────
+ PERF-501  Database query optimization
+ SEC-601   Two-factor authentication
+
+═══════════════════════════════════════════════════════
+Total: 6 features | 3 implemented | 1 in progress | 2 planned
+```
+
+---
+
+### `/memory-search query`
+
+Search tracked features by keyword or description.
+
+**Usage:**
+```
+/memory-search auth
+/memory-search "user login"
+/memory-search dashboard
+```
+
+**Example Session:**
+```
+User: /memory-search auth
+
+Claude: Search Results for "auth"
+═══════════════════════════════════════════════════════
+
+Found 2 matching features:
+
+1. AUTH-101: User authentication with OAuth
+   ├─ Status: ✓ implemented
+   ├─ Keywords: user, authentication, oauth, login
+   ├─ Files: src/auth/oauth.ts, src/auth/middleware.ts
+   └─ Match reason: keyword "authentication"
+
+2. SEC-601: Two-factor authentication
+   ├─ Status: ○ planned
+   ├─ Keywords: security, 2fa, authentication, totp
+   ├─ Files: (none yet)
+   └─ Match reason: keyword "authentication"
+
+═══════════════════════════════════════════════════════
+Use /execute TICKET-ID to view full details or extend a feature.
+```
+
+**Example Session (No Results):**
+```
+User: /memory-search payment
+
+Claude: Search Results for "payment"
+═══════════════════════════════════════════════════════
+
+No features found matching "payment".
+
+Suggestions:
+- Check spelling or try related terms
+- Use /memory-status to see all features
+- This might be a new feature to implement
+
+═══════════════════════════════════════════════════════
+```
 
 ## Multi-Developer Workflow
 
