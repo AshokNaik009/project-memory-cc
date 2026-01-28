@@ -5,6 +5,37 @@
 
 A Claude Code skill that enables multi-developer ticket tracking with automatic duplicate detection. Prevents wasted effort by checking if features have already been implemented before starting new work.
 
+## Architecture
+
+For a detailed technical deep-dive, see [ARCHITECTURE.md](ARCHITECTURE.md).
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│                    CLAUDE CODE SESSION                       │
+│                                                              │
+│  /execute ──┬── Keyword Extraction ── Duplicate Detection   │
+│             │                                                │
+│             ▼                                                │
+│      ┌─────────────────┐         ┌─────────────────┐        │
+│      │   Commands (4)  │ ◄─────► │  Memory Store   │        │
+│      │  init, execute  │         │ features.json   │        │
+│      │  status, search │         └────────┬────────┘        │
+│      └─────────────────┘                  │                 │
+│                                           │                 │
+│      ┌─────────────────┐                  │                 │
+│      │   Hooks (3)     │                  │                 │
+│      │  session_start  │──────────────────┘                 │
+│      │  queue, commit  │                                    │
+│      └─────────────────┘                                    │
+└─────────────────────────────────────────────────────────────┘
+                              │
+                              ▼
+                    ┌─────────────────┐
+                    │    Git Sync     │
+                    │  (Team Shared)  │
+                    └─────────────────┘
+```
+
 ## The Problem
 
 In software development teams, especially those using AI coding assistants:

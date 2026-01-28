@@ -2,6 +2,7 @@
   "hooks": {
     "SessionStart": [
       {
+           "matcher": "",
         "hooks": [
           {
             "type": "command",
@@ -11,13 +12,24 @@
         ]
       }
     ],
-    "PostToolUse": [
+        "PostToolUse": [
       {
         "matcher": "Edit|MultiEdit|Write",
         "hooks": [
           {
             "type": "command",
-            "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/track-claude-changes.js\""
+            "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/queue-claude-files.js\""
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/commit-claude-files.js\""
           }
         ]
       }
